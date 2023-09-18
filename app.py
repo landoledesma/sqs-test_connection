@@ -34,21 +34,25 @@ for mensaje in response.get('Messages', []):
     # Obtener el cuerpo del mensaje y cargarlo como JSON
     cuerpo = mensaje['Body']
     datos = json.loads(cuerpo)
-    
-    # Guardar la información original en el diccionario de mapeo
-    mapeo_desenmascaramiento[crear_hash(datos['device_id'])] = datos['device_id']
-    mapeo_desenmascaramiento[crear_hash(datos['ip'])] = datos['ip']
-    
-    # Reemplazar los valores de device_id e ip con su versión hash
-    datos['device_id'] = crear_hash(datos['device_id'])
-    datos['ip'] = crear_hash(datos['ip'])
-    
-    # Insertar los datos procesados en la base de datos PostgreSQL
-    cursor.execute("""
-        INSERT INTO user_logins (user_id, device_type, masked_ip, masked_device_id, locale, app_version, create_date) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-    """, (datos['user_id'], datos['device_type'], datos['ip'], datos['device_id'], datos['locale'], datos['app_version'], datetime.now().date()))
-
+    # Obtener device_id y ip, devolverá None si las claves no existen
+    device_id = datos.get('device_id')
+    ip = datos.get('ip')
+    if device_id and ip:
+        # Guardar la información original en el diccionario de mapeo
+        mapeo_desenmascaramiento[crear_hash(datos['device_id'])] = datos['device_id']
+        mapeo_desenmascaramiento[crear_hash(datos['ip'])] = datos['ip']
+        
+        # Reemplazar los valores de device_id e ip con su versión hash
+        datos['device_id'] = crear_hash(datos['device_id'])
+        datos['ip'] = crear_hash(datos['ip'])
+        
+        # Insertar los datos procesados en la base de datos PostgreSQL
+        cursor.execute("""
+            INSERT INTO user_logins (user_id, device_type, masked_ip, masked_device_id, locale, app_version, create_date) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (datos['user_id'], datos['device_type'], datos['ip'], datos['device_id'], datos['locale'], datos['app_version'], datetime.now().date()))
+    else:
+        print(f"Mensaje con datos incompletos: {datos}")
 # Guardar el diccionario de mapeo en la base de datos
 for hash_val, original_val in mapeo_desenmascaramiento.items():
     cursor.execute("""

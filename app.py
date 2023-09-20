@@ -35,6 +35,7 @@ def procesar_mensajes(mensajes, cursor):
 
     for mensaje in mensajes:
         cuerpo = mensaje['Body']
+        message_id = mensaje['MessageId']
         datos = json.loads(cuerpo)
         device_id = datos.get('device_id')
         ip = datos.get('ip')
@@ -47,9 +48,9 @@ def procesar_mensajes(mensajes, cursor):
             datos['ip'] = crear_hash(datos['ip'])
             
             cursor.execute("""
-                INSERT INTO user_logins (user_id, device_type, masked_ip, masked_device_id, locale, app_version, create_date) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (datos['user_id'], datos['device_type'], datos['ip'], datos['device_id'], datos['locale'], datos['app_version'], datetime.now().date()))
+                INSERT INTO user_logins (user_id, device_type, masked_ip, masked_device_id, locale, app_version, create_date,message_id) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s,%s)
+            """, (datos['user_id'], datos['device_type'], datos['ip'], datos['device_id'], datos['locale'], datos['app_version'], datetime.now().date(),message_id))
         else:
             logging.warning(f"Mensaje con datos incompletos: {datos}")
 
@@ -69,7 +70,7 @@ def main():
 
         for hash_val, original_val in mapeo_desenmascaramiento.items():
             cursor.execute("""
-                INSERT INTO mapeo_desenmascaramiento (hash_val, original_val) 
+                INSERT INTO map_desmask (hash_val, original_val) 
                 VALUES (%s, %s)
             """, (hash_val, original_val))
 

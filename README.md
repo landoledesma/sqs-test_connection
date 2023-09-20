@@ -8,7 +8,7 @@ A continuación, te presento una guía paso a paso para configurar el entorno de
 
 ### Requisitos Previos
 
-- Python 3.x: Asegúrate de tener instalado Python 3.x en tu sistema. Puedes verificarlo e instalarlo desde la [página oficial de Python](https://www.python.org/).
+- Python <3.6: Asegúrate de tener instalado Python 3.x en tu sistema. Puedes verificarlo e instalarlo desde la [página oficial de Python](https://www.python.org/).
 
 ### Pasos para la Configuración
 
@@ -62,27 +62,67 @@ A continuación, te presento una guía paso a paso para configurar el entorno de
 
     _(Reemplaza `tu_entorno` con un nombre para tu entorno y `3.x` con la versión de Python que deseas usar)_
 
-3. **Instalar Dependencias**
+Las instrucciones que proporcionaste son coherentes, pero parece haber una desviación en la numeración y la estructura de las secciones. A partir del tercer punto, se reinicia la numeración y hay dos secciones que explican cómo instalar dependencias (una en los primeros pasos y otra en los pasos etiquetados como 3 y 4).
 
-    - **Con Anaconda:**
+Aquí hay una versión revisada de tu README que tiene una estructura más coherente:
 
-      Instala las dependencias en tu entorno de Conda usando:
-      
-      ```bash
-      conda install --file requirements.txt
-      ```
+---
 
-    - **Sin Anaconda (pip):**
+# Instrucciones para instalar los requisitos desde un archivo `requirements.txt`
 
-      Si utilizas `venv` u otro gestor que no es Anaconda, utiliza `pip` para instalar las dependencias:
-      
-      ```bash
-      pip install -r requirements.txt
-      ```
+## Pasos:
 
-4. **Verificar la Instalación**
+### 1. Preparación Inicial
 
-    Una vez instaladas todas las dependencias, verifica que tu ambiente está configurado correctamente ejecutando tu script o aplicación Python.
+1. **Abre una Terminal**
+   Abre una terminal o línea de comandos en tu sistema operativo.
+
+2. **Navegación al Directorio del Proyecto**
+   Navega al directorio raíz del proyecto que has descargado desde GitHub usando el comando `cd`. Por ejemplo:
+   
+   ```bash
+   cd ruta/al/proyecto
+   ```
+
+3. **Verificación de Python y pip**
+   Asegúrate de que tienes Python y pip instalados en tu sistema. Puedes verificarlo con los siguientes comandos:
+   
+   ```bash
+   python --version
+   pip --version
+   ```
+   
+   Si no tienes Python instalado o no está en tu variable de entorno PATH, siga las instrucciones para instalarlo.
+
+### 2. Instalación de Dependencias
+
+4. **Configuración del Entorno**
+   Asegúrate de configurar y activar tu entorno de Python correctamente antes de ejecutar los comandos de instalación. Si estás utilizando un entorno virtual, actívalo antes de seguir adelante.
+
+5. **Instalación de Requisitos**
+   - **Con Anaconda:**
+     Si estás utilizando Anaconda, utiliza el siguiente comando para instalar las dependencias:
+     
+     ```bash
+     conda install --file requirements.txt
+     ```
+   
+   - **Sin Anaconda (pip):**
+     Si utilizas `venv` u otro gestor que no es Anaconda, utiliza el siguiente comando:
+     
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+### 3. Verificación
+
+6. **Verificar la Instalación**
+   Una vez instaladas todas las dependencias, verifica que tu ambiente está configurado correctamente ejecutando tu script o aplicación Python.
+
+---
+
+Esta versión revisada mantiene una estructura coherente y una numeración consistente, lo que facilita seguir los pasos uno tras otro sin confusión.
+
 
 
 

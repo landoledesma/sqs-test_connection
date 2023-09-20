@@ -4,13 +4,17 @@ import json
 import psycopg2
 from datetime import datetime
 import os
-# Establecer credenciales ficticias
-os.environ['AWS_ACCESS_KEY_ID'] = 'ficticio'
-os.environ['AWS_SECRET_ACCESS_KEY'] = 'ficticio'
-os.environ['AWS_SESSION_TOKEN'] = 'ficticio'
+from dotenv import load_dotenv
+# Cargar las variables de entorno del archivo .env
+load_dotenv()
 
-# Conexión a la base de datos PostgreSQL
-conn = psycopg2.connect(dbname='postgres', user='postgres', password='postgres', host='localhost', port='5433')
+# Establecer credenciales a partir de las variables de entorno
+os.environ['AWS_ACCESS_KEY_ID'] = os.getenv('AWS_ACCESS_KEY_ID')
+os.environ['AWS_SECRET_ACCESS_KEY'] = os.getenv('AWS_SECRET_ACCESS_KEY')
+os.environ['AWS_SESSION_TOKEN'] = os.getenv('AWS_SESSION_TOKEN')
+
+# Conexión a la base de datos PostgreSQL utilizando variables de entorno
+conn = psycopg2.connect(dbname=os.getenv('DB_NAME'), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD'), host=os.getenv('DB_HOST'), port=os.getenv('DB_PORT'))
 cursor = conn.cursor()
 
 # Conectar con AWS SQS (en localstack)

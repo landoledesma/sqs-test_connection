@@ -62,9 +62,6 @@ A continuación, te presento una guía paso a paso para configurar el entorno de
 
     _(Reemplaza `tu_entorno` con un nombre para tu entorno y `3.x` con la versión de Python que deseas usar)_
 
-Las instrucciones que proporcionaste son coherentes, pero parece haber una desviación en la numeración y la estructura de las secciones. A partir del tercer punto, se reinicia la numeración y hay dos secciones que explican cómo instalar dependencias (una en los primeros pasos y otra en los pasos etiquetados como 3 y 4).
-
-Aquí hay una versión revisada de tu README que tiene una estructura más coherente:
 
 ---
 
@@ -122,7 +119,3 @@ Aquí hay una versión revisada de tu README que tiene una estructura más coher
 ---
 
 Esta versión revisada mantiene una estructura coherente y una numeración consistente, lo que facilita seguir los pasos uno tras otro sin confusión.
-
-
-
-

@@ -1,12 +1,11 @@
 import psycopg2
 
-def obtener_valor_original(cursor, hash_val):
-    cursor.execute("SELECT original_val FROM mapeo_desenmascaramiento WHERE hash_val = %s", (hash_val,))
-    resultado = cursor.fetchone()
-    if resultado:
-        return resultado[0]
-    else:
-        return None
+def obtener_valores_originales(cursor, hash_vals):
+    placeholders = ", ".join(["%s"] * len(hash_vals))
+    cursor.execute(f"SELECT hash_val, original_val FROM mapeo_desenmascaramiento WHERE hash_val IN ({placeholders})", tuple(hash_vals))
+    resultados = cursor.fetchall()
+    resultado_dict = {row[0]: row[1] for row in resultados}
+    return [resultado_dict.get(hash_val) for hash_val in hash_vals]
 
 def main():
     # Conexión a la base de datos
@@ -14,22 +13,24 @@ def main():
     cursor = conn.cursor()
 
     # Solicita al usuario que ingrese los hashes para buscar
-    hash_device_id = input("Ingrese el hash del device_id: ")  
-    hash_ip = input("Ingrese el hash de la IP: ")  
+    hash_device_ids = input("Ingrese los hashes de los device_ids, separados por comas: ").split(', ')
+    hash_ips = input("Ingrese los hashes de las IPs, separados por comas: ").split(', ')
     
     # Obtener y mostrar los valores originales
-    device_id_original = obtener_valor_original(cursor, hash_device_id)
-    ip_original = obtener_valor_original(cursor, hash_ip)
+    device_ids_originales = obtener_valores_originales(cursor, hash_device_ids)
+    ips_originales = obtener_valores_originales(cursor, hash_ips)
 
-    if device_id_original:
-        print(f"El device_id original es: {device_id_original}")
-    else:
-        print("No se encontró un device_id con ese hash.")
+    for i, original in enumerate(device_ids_originales):
+        if original:
+            print(f"El device_id original para el hash {hash_device_ids[i]} es: {original}")
+        else:
+            print(f"No se encontró un device_id con el hash {hash_device_ids[i]}.")
 
-    if ip_original:
-        print(f"La IP original es: {ip_original}")
-    else:
-        print("No se encontró una IP con ese hash.")
+    for i, original in enumerate(ips_originales):
+        if original:
+            print(f"La IP original para el hash {hash_ips[i]} es: {original}")
+        else:
+            print(f"No se encontró una IP con el hash {hash_ips[i]}.")
 
     # Cerrar la conexión
     cursor.close()

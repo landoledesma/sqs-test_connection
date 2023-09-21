@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 import logging
 import time
+
 # Configuración de logging
 logging.basicConfig(level=logging.INFO)
 

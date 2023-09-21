@@ -86,7 +86,7 @@ def main():
             cursor.close()
             DB_POOL.putconn(conn)
 
-        time.sleep(300)  # Espera 300 segundos (5 minutos) antes de verificar nuevamente
+        time.sleep(70)  # Espera antes de verificar nuevamente
 
 if __name__ == "__main__":
     main()

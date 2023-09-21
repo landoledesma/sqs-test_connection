@@ -118,10 +118,99 @@ Descripción
 
 ---
 
-consideraciones 
+## Setup docker 
+
+1. You will need the following prerequisites:
+   - A GitHub, GitLab, Bitbucket, etc. account.
+   - The following software installed on your local machine:
+     - Docker ([Docker installation guide](https://docs.docker.com/get-docker/))
+     - Docker Compose
+     - AWS CLI (install using `pip install awscli-local`)
+     - PostgreSQL (installation instructions [here](https://www.postgresql.org/download/)).
+
+2. Use the following Docker images with test data baked in:
+   - Postgres
+   - Localstack
+
+### Example Docker Compose YAML to run the test environment:
+
+```yaml
+version: "3.9"
+services:
+  localstack:
+    image: fetchdocker/data-takehome-localstack
+    ports:
+      - "4566:4566"
+  postgres:
+    image: fetchdocker/data-takehome-postgres
+    ports:
+      - 5432:5432
+```
+
+3. PostgreSQL Credentials:
+   - Password: postgres
+   - Username: postgres
+
+4. Test local access:
+   - Read a message from the queue using `awslocal`:
+     ```bash
+     awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/login-queue
+     ```
+   - Connect to the PostgreSQL database and verify the table is created:
+     i. Run the following command:
+     ```bash
+     psql -d postgres -U postgres -p 5432 -h localhost -W
+     ```
+     ii. Once connected to PostgreSQL, you can query the table with:
+     ```sql
+     postgres=# SELECT * FROM user_logins;
+     ```
+```
+### consideraciones 
 puedes usar el comando:
 
   ```bash
   awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/login-queue --attribute-names 
   ```
 para verificar cuantos mensajes hay en la cola 
+
+
+#### ¿Cómo leerás los mensajes de la cola?
+
+Utilizando `boto3`, se invoca `sqs.receive_message` para leer mensajes de una cola SQS en un bucle infinito.
+
+#### ¿Qué tipo de estructuras de datos se deben utilizar?
+
+EN este caso se utilizan diccionarios para mapear y procesar los datos, y listas para almacenar múltiples mensajes recibidos de la cola.
+
+#### ¿Cómo enmascararás los datos PII de manera que se puedan identificar los valores duplicados?
+
+Utilizando la función `crear_hash`, que aplica una función hash (SHA-256) a los datos PII (IP y ID del dispositivo), permitiendo identificar valores duplicados sin exponer la información original.
+
+#### ¿Cuál será tu estrategia para conectarte y escribir en Postgres?
+
+Se utiliza un "connection pool" (SimpleConnectionPool) para gestionar las conexiones a PostgreSQL, y se emplean consultas SQL para insertar datos, ejecutadas mediante el método `execute` del cursor de psycopg2.
+
+#### ¿Dónde y cómo se ejecutará tu aplicación?
+
+La aplicación se ejecuta  indefinidamente en el entorno donde se lance, haciendo uso de un bucle infinito (`while True`) en la función `main`, que consulta la cola cada cada cierto tiempo y procesa los mensajes recibidos en cada iteración.
+
+### ¿Cómo implementarías esta aplicación en producción?
+
+Para implementar esta aplicación en producción, configuraría un entorno que contenga todas las dependencias necesarias, tales como PostgreSQL, boto3, entre otros módulos. Posteriormente, optaría por encapsular la aplicación en un contenedor usando tecnologías como Docker, facilitando así el despliegue y la escalabilidad en un entorno de nube o en un clúster de Kubernetes.
+
+### ¿Qué otros componentes agregarías para preparar esto para producción?
+
+Sería beneficioso agregar sistemas de monitoreo y alerta, para supervisar el rendimiento y la salud de la aplicación. También sería prudente implementar pruebas automatizadas, y procesos de integración y despliegue continuo (CI/CD) para asegurar la calidad del código y facilitar las actualizaciones.
+
+### ¿Cómo puede escalar esta aplicación con un conjunto de datos en crecimiento?
+
+La aplicación puede escalar horizontalmente, agregando más instancias para manejar una mayor carga de trabajo. La base de datos, por su parte, puede escalarse verticalmente para administrar un conjunto de datos más amplio.
+
+### ¿Cómo se puede recuperar la PII más tarde?
+
+La Información Personal Identificable (PII) puede recuperarse utilizando el mapeo de desenmascaramiento creado en el código, que vincula los hashes con sus valores originales. 
+
+### ¿Cuáles son las suposiciones que hiciste?
+
+Las suposiciones que pueden haberse realizado durante la creación de este código incluyen que los mensajes de SQS contendrán ciertos campos específicos, que la configuración del entorno (como las variables de entorno) está establecida correctamente, y que la estructura de la base de datos está preparada con las tablas correspondientes creadas. También parece asumirse que la cola SQS estará disponible en 'localhost:4566'

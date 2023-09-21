@@ -1,4 +1,16 @@
 import psycopg2
+from psycopg2.pool import SimpleConnectionPool
+import os
+# Configuración de Connection Pool
+DB_POOL = SimpleConnectionPool(
+    minconn=1,
+    maxconn=10,
+    dbname=os.getenv('DB_NAME'), 
+    user=os.getenv('DB_USER'), 
+    password=os.getenv('DB_PASSWORD'), 
+    host=os.getenv('DB_HOST'), 
+    port=os.getenv('DB_PORT')
+)
 
 def obtener_valores_originales(cursor, hash_vals):
     placeholders = ", ".join(["%s"] * len(hash_vals))
@@ -8,8 +20,8 @@ def obtener_valores_originales(cursor, hash_vals):
     return [resultado_dict.get(hash_val) for hash_val in hash_vals]
 
 def main():
-    # Conexión a la base de datos
-    conn = psycopg2.connect(dbname='postgres', user='postgres', password='postgres', host='localhost', port='5433')
+   # Obtener una conexión del pool
+    conn = DB_POOL.getconn()
     cursor = conn.cursor()
 
     # Solicita al usuario que ingrese los hashes para buscar
@@ -34,7 +46,7 @@ def main():
 
     # Cerrar la conexión
     cursor.close()
-    conn.close()
+    DB_POOL.putconn(conn)
 
 # Verifica si el script se está ejecutando directamente (no está siendo importado)
 if __name__ == "__main__":

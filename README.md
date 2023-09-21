@@ -1,10 +1,10 @@
 # Nombre de tu Proyecto
 
-Descripción breve de tu proyecto aquí.
+Descripción 
 
 ## Configuración del Entorno de Desarrollo
 
-A continuación, te presento una guía paso a paso para configurar el entorno de desarrollo, que será útil tanto si utilizas Anaconda como si prefieres otro sistema de gestión de paquetes.
+ Guía paso a paso para configurar el entorno de desarrollo, que será útil tanto si utilizas Anaconda como si prefieres otro sistema de gestión de paquetes.
 
 ### Requisitos Previos
 
@@ -118,4 +118,10 @@ A continuación, te presento una guía paso a paso para configurar el entorno de
 
 ---
 
-Esta versión revisada mantiene una estructura coherente y una numeración consistente, lo que facilita seguir los pasos uno tras otro sin confusión.
+consideraciones 
+puedes usar el comando:
+
+  ```bash
+  awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/login-queue --attribute-names 
+  ```
+para verificar cuantos mensajes hay en la cola 

@@ -164,30 +164,31 @@ puedes usar el comando:
   ```
 para verificar cuantos mensajes hay en la cola 
 
+# Algunas cuestiones referentes al codigo 
 
-#### ¿Cómo leerás los mensajes de la cola?
+#### ¿Cómo se leen los mensajes de la cola?
 
 Utilizando `boto3`, se invoca `sqs.receive_message` para leer mensajes de una cola SQS en un bucle infinito.
 
-#### ¿Qué tipo de estructuras de datos se deben utilizar?
+#### ¿Qué tipo de estructuras de datos se utiliza?
 
-EN este caso se utilizan diccionarios para mapear y procesar los datos, y listas para almacenar múltiples mensajes recibidos de la cola.
+En este caso se utilizan diccionarios para mapear y procesar los datos, y listas para almacenar múltiples mensajes recibidos de la cola.
 
-#### ¿Cómo enmascararás los datos PII de manera que se puedan identificar los valores duplicados?
+#### ¿Cómo se enmascaran los datos PII de manera que se puedan identificar los valores duplicados?
 
 Utilizando la función `crear_hash`, que aplica una función hash (SHA-256) a los datos PII (IP y ID del dispositivo), permitiendo identificar valores duplicados sin exponer la información original.
 
-#### ¿Cuál será tu estrategia para conectarte y escribir en Postgres?
+#### ¿Cuál es la estrategia para conectarse y escribir en Postgres?
 
 Se utiliza un "connection pool" (SimpleConnectionPool) para gestionar las conexiones a PostgreSQL, y se emplean consultas SQL para insertar datos, ejecutadas mediante el método `execute` del cursor de psycopg2.
 
-#### ¿Dónde y cómo se ejecutará tu aplicación?
+#### ¿Dónde y cómo se ejecuta la aplicación?
 
 La aplicación se ejecuta  indefinidamente en el entorno donde se lance, haciendo uso de un bucle infinito (`while True`) en la función `main`, que consulta la cola cada cada cierto tiempo y procesa los mensajes recibidos en cada iteración.
 
-### ¿Cómo implementarías esta aplicación en producción?
+### ¿Cómo se podria implementar esta aplicación en producción?
 
-Para implementar esta aplicación en producción, configuraría un entorno que contenga todas las dependencias necesarias, tales como PostgreSQL, boto3, entre otros módulos. Posteriormente, optaría por encapsular la aplicación en un contenedor usando tecnologías como Docker, facilitando así el despliegue y la escalabilidad en un entorno de nube o en un clúster de Kubernetes.
+Para implementar esta aplicación en producción, se deberia configurar un entorno que contenga todas las dependencias necesarias, tales como PostgreSQL, boto3, entre otros módulos. Posteriormente, se puede encapsular la aplicación en un contenedor usando tecnologías como Docker, facilitando así el despliegue y la escalabilidad en un entorno de nube o en un clúster de Kubernetes.
 
 ### ¿Qué otros componentes agregarías para preparar esto para producción?
 
@@ -199,8 +200,8 @@ La aplicación puede escalar horizontalmente, agregando más instancias para man
 
 ### ¿Cómo se puede recuperar la PII más tarde?
 
-La Información Personal Identificable (PII) puede recuperarse utilizando el mapeo de desenmascaramiento creado en el código, que vincula los hashes con sus valores originales. 
+La Información Personal Identificable (PII) puede recuperarse utilizando el mapeo de desenmascaramiento creado en el código, que vincula los hashes con sus valores originales se he creado una tabla en postgres que contiene los valores originales y se ha creado un script llamado recover_values en caso de que se necesite recuperar algunos valores. 
 
-### ¿Cuáles son las suposiciones que hiciste?
+### ¿Cuáles son las suposiciones que se hiciceron?
 
 Las suposiciones que pueden haberse realizado durante la creación de este código incluyen que los mensajes de SQS contendrán ciertos campos específicos, que la configuración del entorno (como las variables de entorno) está establecida correctamente, y que la estructura de la base de datos está preparada con las tablas correspondientes creadas. También parece asumirse que la cola SQS estará disponible en 'localhost:4566'

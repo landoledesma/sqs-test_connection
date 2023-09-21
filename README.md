@@ -109,7 +109,7 @@
    Una vez instaladas todas las dependencias, verifica que tu ambiente está configurado correctamente ejecutando tu script o aplicación Python.
 
 ---
-## Setup docker 
+## Configuración del Entorno Docker
 Necesitarás los siguientes requisitos previos:
    - Una cuenta en GitHub, GitLab, Bitbucket, etc.
    - El siguiente software instalado en tu máquina local:
@@ -118,11 +118,18 @@ Necesitarás los siguientes requisitos previos:
      - AWS CLI (instálalo usando `pip install awscli-local`)
      - PostgreSQL (instrucciones de instalación [aquí](https://www.postgresql.org/download/)).
 
-Utiliza las siguientes imágenes de Docker con datos de prueba incorporados:
-   - Postgres
-   - Localstack
+### Descarga las Imágenes de Docker
 
-### Ejemplo de archivo YAML de Docker Compose para ejecutar el entorno de prueba:
+Ejecuta el siguiente comando para descargar las imágenes de Docker necesarias:
+
+```bash
+docker pull fetchdocker/data-takehome-localstack
+docker pull fetchdocker/data-takehome-postgres
+```
+
+### Ejecuta el Entorno de Prueba
+
+Utiliza Docker Compose para ejecutar el entorno de prueba. Crea un archivo `docker-compose.yml` en la raíz de tu proyecto con el siguiente contenido:
 
 ```yaml
 version: "3.9"
@@ -137,25 +144,72 @@ services:
       - 5432:5432
 ```
 
-Credenciales de PostgreSQL:
-   - Contraseña: postgres
-   - Nombre de usuario: postgres
+Luego, ejecuta el siguiente comando en el directorio donde se encuentra el archivo `docker-compose.yml`:
 
-Prueba el acceso local:
-   - Lee un mensaje de la cola utilizando `awslocal`:
-     ```bash
-     awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/login-queue
-     ```
-   - Conéctate a la base de datos PostgreSQL y verifica que la tabla esté creada:
-     i. Ejecuta el siguiente comando:
-     ```bash
-     psql -d postgres -U postgres -p 5432 -h localhost -W
-     ```
-     ii. Una vez conectado a PostgreSQL, puedes consultar la tabla con:
-     ```sql
-     postgres=# SELECT * FROM user_logins;
-     ```
+```bash
+docker-compose up -d
 ```
+
+### Acceso a PostgreSQL
+
+Para conectarte a la base de datos PostgreSQL, utiliza las siguientes credenciales:
+
+- Nombre de usuario: postgres
+- Contraseña: postgres
+
+Ejecuta el siguiente comando para conectarte a la base de datos:
+
+```bash
+psql -d postgres -U postgres -p 5432 -h localhost -W
+```
+
+Una vez conectado, puedes consultar la tabla con:
+
+```sql
+postgres=# SELECT * FROM user_logins;
+```
+
+### Acceso a AWS Local
+
+Para leer mensajes de la cola de AWS localmente, utiliza el siguiente comando:
+
+```bash
+awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/login-queue
+```
+
+También puedes verificar cuántos mensajes hay en la cola con:
+
+```bash
+awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/login-queue --attribute-names
+```
+
+¡Ahora estás listo para comenzar a trabajar en el proyecto utilizando Docker!
+```
+
+## Gestión de Contenedores Docker
+
+Para gestionar los contenedores Docker y detenerlos cuando termines de trabajar o reiniciarlos en caso de ser necesario, sigue estos pasos:
+
+### Detener los Contenedores
+
+Cuando hayas terminado de trabajar, puedes detener los contenedores ejecutando:
+
+```bash
+docker-compose down
+```
+
+Esto apagará y eliminará los contenedores, pero conservará los datos persistentes como la base de datos PostgreSQL.
+
+### Volver a Encender los Contenedores
+
+Si necesitas volver a encender los contenedores en el futuro, simplemente ejecuta:
+
+```bash
+docker-compose up -d
+```
+
+Esto reiniciará los contenedores previamente configurados en el archivo `docker-compose.yml`. Puedes utilizar estos comandos para iniciar y detener el entorno Docker según sea necesario para el proyecto.
+
 ### consideraciones 
 puedes usar el comando:
 

@@ -1,135 +1,134 @@
-## Configuración del Entorno de Desarrollo
+## Development Environment Setup
 
- Guía paso a paso para configurar el entorno de desarrollo, que será útil tanto si utilizas Anaconda como si prefieres otro sistema de gestión de paquetes.
+A step-by-step guide to configuring the development environment, which will be useful whether you are using Anaconda or prefer another package management system.
 
-### Requisitos Previos
+### Prerequisites
 
-- Python < 3.10: Asegúrate de tener instalado Python 3.10 o mayor en tu sistema ya que este es la version con la que se construyo la aplicacion y esta probada. Puedes verificarlo e instalarlo desde la [página oficial de Python](https://www.python.org/).
+- Python < 3.10: Make sure you have Python 3.10 or higher installed on your system as this is the version with which the application was built and tested. You can verify and install it from the [official Python website](https://www.python.org/).
 
-### Pasos para la Configuración
+### Configuration Steps
 
-1. **Clonar el Repositorio**
+1. **Clone the Repository**
    
-    Clona el repositorio de GitHub usando el siguiente comando en tu terminal:
-   
-    ```bash
-    https://github.com/landoledesma/sqs-test_connection.git
-    ```
-
-2. **Crear un Entorno Virtual**
-
-    - **Con Anaconda:**
-      - Crea un nuevo entorno:
-      
-        ```bash
-        conda create --name tu_entorno python=3.x
-        ```
-      
-      - Activa el entorno:
-      
-        ```bash
-        conda activate tu_entorno
-        ```
-
-    - **Sin Anaconda (Python venv):**
-
-      - Crea un entorno virtual:
-        
-        ```bash
-        python3 -m venv tu_entorno
-        ```
-
-      - Activa el entorno:
-        
-        - En Windows:
-          
-          ```bash
-          .\tu_entorno\Scripts\activate
-          ```
-
-        - En Linux/Mac:
-          
-          ```bash
-          source tu_entorno/bin/activate
-          ```
-
-    _(Reemplaza `tu_entorno` con un nombre para tu entorno y `3.x` con la versión de Python que deseas usar)_
-
----
-
-# Instrucciones para instalar los requisitos desde un archivo `requirements.txt`
-
-## Pasos:
-
-### 1. Preparación Inicial
-
-1. **Abre una Terminal**
-   Abre una terminal o línea de comandos en tu sistema operativo.
-
-2. **Navegación al Directorio del Proyecto**
-   Navega al directorio raíz del proyecto que has descargado desde GitHub usando el comando `cd`. Por ejemplo:
+   Clone the GitHub repository using the following command in your terminal:
    
    ```bash
-   cd ruta/al/proyecto
+   https://github.com/landoledesma/sqs-test_connection.git
    ```
 
-3. **Verificación de Python y pip**
-   Asegúrate de que tienes Python y pip instalados en tu sistema. Puedes verificarlo con los siguientes comandos:
+2. **Create a Virtual Environment**
+
+   - **With Anaconda:**
+     - Create a new environment:
+       
+       ```bash
+       conda create --name your_environment python=3.x
+       ```
+       
+     - Activate the environment:
+       
+       ```bash
+       conda activate your_environment
+       ```
+
+   - **Without Anaconda (Python venv):**
+
+     - Create a virtual environment:
+       
+       ```bash
+       python3 -m venv your_environment
+       ```
+
+     - Activate the environment:
+       
+       - On Windows:
+         
+         ```bash
+         .\your_environment\Scripts\activate
+         ```
+
+       - On Linux/Mac:
+         
+         ```bash
+         source your_environment/bin/activate
+         ```
+
+   _(Replace `your_environment` with a name for your environment and `3.x` with the Python version you want to use)_
+---
+# Instructions for Installing Requirements from a `requirements.txt` File
+
+## Steps:
+
+### 1. Initial Setup
+
+1. **Open a Terminal**
+   Open a terminal or command line on your operating system.
+
+2. **Navigate to Project Directory**
+   Navigate to the root directory of the project you have downloaded from GitHub using the `cd` command. For example:
+   
+   ```bash
+   cd path/to/your/project
+   ```
+
+3. **Check Python and pip**
+   Make sure you have Python and pip installed on your system. You can check this with the following commands:
    
    ```bash
    python --version
    pip --version
    ```
    
-   Si no tienes Python instalado o no está en tu variable de entorno PATH, siga las instrucciones para instalarlo.
+   If you don't have Python installed or it's not in your PATH environment variable, follow the instructions to install it.
 
-### 2. Instalación de Dependencias
+### 2. Installing Dependencies
 
-4. **Configuración del Entorno**
-   Asegúrate de configurar y activar tu entorno de Python correctamente antes de ejecutar los comandos de instalación. Si estás utilizando un entorno virtual, actívalo antes de seguir adelante.
+4. **Set Up the Environment**
+   Ensure you have set up and activated your Python environment correctly before running the installation commands. If you're using a virtual environment, activate it before proceeding.
 
-5. **Instalación de Requisitos**
-   - **Con Anaconda:**
-     Si estás utilizando Anaconda, utiliza el siguiente comando para instalar las dependencias:
+5. **Install Requirements**
+   - **With Anaconda:**
+     If you're using Anaconda, use the following command to install the dependencies:
      
      ```bash
      conda install --file requirements.txt
      ```
    
-   - **Sin Anaconda (pip):**
-     Si utilizas `venv` u otro gestor que no es Anaconda, utiliza el siguiente comando:
+   - **Without Anaconda (pip):**
+     If you're using `venv` or another package manager other than Anaconda, use the following command:
      
      ```bash
      pip install -r requirements.txt
      ```
 
-### 3. Verificación
+### 3. Verification
 
-6. **Verificar la Instalación**
-   Una vez instaladas todas las dependencias, verifica que tu ambiente está configurado correctamente ejecutando tu script o aplicación Python.
-
+6. **Verify the Installation**
+   Once all the dependencies are installed, verify that your environment is configured correctly by running your Python script or application.
 ---
-## Configuración del Entorno Docker
-Necesitarás los siguientes requisitos previos:
-   - Una cuenta en GitHub, GitLab, Bitbucket, etc.
-   - El siguiente software instalado en tu máquina local:
-     - Docker ([Guía de instalación de Docker](https://docs.docker.com/get-docker/))
-     - Docker Compose
-     - AWS CLI (instálalo usando `pip install awscli-local`)
-     - PostgreSQL (instrucciones de instalación [aquí](https://www.postgresql.org/download/)).
+## Docker Environment Setup
 
-### Descarga las Imágenes de Docker
+You will need the following prerequisites:
 
-Ejecuta el siguiente comando para descargar las imágenes de Docker necesarias:
+- An account on GitHub, GitLab, Bitbucket, etc.
+- The following software installed on your local machine:
+  - Docker ([Docker installation guide](https://docs.docker.com/get-docker/))
+  - Docker Compose
+  - AWS CLI (install it using `pip install awscli-local`)
+  - PostgreSQL (installation instructions [here](https://www.postgresql.org/download/)).
+
+### Download Docker Images
+
+Run the following command to download the necessary Docker images:
 
 ```bash
 docker pull fetchdocker/data-takehome-localstack
 docker pull fetchdocker/data-takehome-postgres
 ```
 
-### Ejecuta el Entorno de Prueba
+### Run the Test Environment
 
-Utiliza Docker Compose para ejecutar el entorno de prueba. Crea un archivo `docker-compose.yml` en la raíz de tu proyecto con el siguiente contenido:
+Use Docker Compose to run the test environment. Create a `docker-compose.yml` file in the root of your project with the following content:
 
 ```yaml
 version: "3.9"
@@ -144,112 +143,112 @@ services:
       - 5432:5432
 ```
 
-Luego, ejecuta el siguiente comando en el directorio donde se encuentra el archivo `docker-compose.yml`:
+Then, run the following command in the directory where the `docker-compose.yml` file is located:
 
 ```bash
 docker-compose up -d
 ```
 
-### Acceso a PostgreSQL
+### Access PostgreSQL
 
-Para conectarte a la base de datos PostgreSQL, utiliza las siguientes credenciales:
+To connect to the PostgreSQL database, use the following credentials:
 
-- Nombre de usuario: postgres
-- Contraseña: postgres
+- Username: postgres
+- Password: postgres
 
-Ejecuta el siguiente comando para conectarte a la base de datos:
+Run the following command to connect to the database:
 
 ```bash
 psql -d postgres -U postgres -p 5432 -h localhost -W
 ```
 
-Una vez conectado, puedes consultar la tabla con:
+Once connected, you can query the table with:
 
 ```sql
 postgres=# SELECT * FROM user_logins;
 ```
 
-### Acceso a AWS Local
+### Access AWS Local
 
-Para leer mensajes de la cola de AWS localmente, utiliza el siguiente comando:
+To read messages from the local AWS queue, use the following command:
 
 ```bash
 awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/login-queue
 ```
 
-También puedes verificar cuántos mensajes hay en la cola con:
+You can also check how many messages are in the queue with:
 
 ```bash
 awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/login-queue --attribute-names
 ```
 
-¡Ahora estás listo para comenzar a trabajar en el proyecto utilizando Docker!
+Now you're ready to start working on the project using Docker!
 
+---
 
-## Gestión de Contenedores Docker
+## Docker Container Management
 
-Para gestionar los contenedores Docker y detenerlos cuando termines de trabajar o reiniciarlos en caso de ser necesario, sigue estos pasos:
+To manage Docker containers and stop them when you're done working or restart them if necessary, follow these steps:
 
-### Detener los Contenedores
+### Stop the Containers
 
-Cuando hayas terminado de trabajar, puedes detener los contenedores ejecutando:
+When you've finished working, you can stop the containers by running:
 
 ```bash
 docker-compose down
 ```
 
-Esto apagará y eliminará los contenedores, pero conservará los datos persistentes como la base de datos PostgreSQL.
+This will shut down and remove the containers but will preserve persistent data like the PostgreSQL database.
 
-### Volver a Encender los Contenedores
+### Start the Containers Again
 
-Si necesitas volver a encender los contenedores en el futuro, simplemente ejecuta:
+If you need to start the containers again in the future, simply run:
 
 ```bash
 docker-compose up -d
 ```
 
-Esto reiniciará los contenedores previamente configurados en el archivo `docker-compose.yml`. Puedes utilizar estos comandos para iniciar y detener el entorno Docker según sea necesario para el proyecto.
-
+This will restart the containers previously configured in the `docker-compose.yml` file. You can use these commands to start and stop the Docker environment as needed for your project.
 ---
 
-# Algunas cuestiones referentes al codigo 
+# Some Questions Regarding the Code
 
-#### ¿Cómo se leen los mensajes de la cola?
+#### How are messages from the queue read?
 
-Utilizando `boto3`, se invoca `sqs.receive_message` para leer mensajes de una cola SQS en un bucle infinito.
+Using `boto3`, `sqs.receive_message` is invoked to read messages from an SQS queue in an infinite loop.
 
-#### ¿Qué tipo de estructuras de datos se utiliza?
+#### What kind of data structures are used?
 
-En este caso se utilizan diccionarios para mapear y procesar los datos, y listas para almacenar múltiples mensajes recibidos de la cola.
+In this case, dictionaries are used to map and process the data, and lists are used to store multiple messages received from the queue.
 
-#### ¿Cómo se enmascaran los datos PII de manera que se puedan identificar los valores duplicados?
+#### How is PII data masked so that duplicate values can be identified?
 
-Utilizando la función `crear_hash`, que aplica una función hash (SHA-256) a los datos PII (IP y ID del dispositivo), permitiendo identificar valores duplicados sin exponer la información original.
+Using the `create_hash` function, which applies a hash function (SHA-256) to PII data (IP and device ID), allowing the identification of duplicate values without exposing the original information.
 
-#### ¿Cuál es la estrategia para conectarse y escribir en Postgres?
+#### What is the strategy for connecting to and writing in Postgres?
 
-Se utiliza un "connection pool" (SimpleConnectionPool) para gestionar las conexiones a PostgreSQL, y se emplean consultas SQL para insertar datos, ejecutadas mediante el método `execute` del cursor de psycopg2.
+A "connection pool" (SimpleConnectionPool) is used to manage connections to PostgreSQL, and SQL queries are used to insert data, executed using the `execute` method of the psycopg2 cursor.
 
-#### ¿Dónde y cómo se ejecuta la aplicación?
+#### Where and how is the application executed?
 
-La aplicación se ejecuta  indefinidamente en el entorno donde se lance, haciendo uso de un bucle infinito (`while True`) en la función `main`, que consulta la cola cada cada cierto tiempo y procesa los mensajes recibidos en cada iteración.
+The application runs indefinitely in the environment where it is launched, making use of an infinite loop (`while True`) in the `main` function, which checks the queue at regular intervals and processes the received messages in each iteration.
 
-### ¿Cómo se podria implementar esta aplicación en producción?
+### How could this application be implemented in production?
 
-Para implementar esta aplicación en producción, se deberia configurar un entorno que contenga todas las dependencias necesarias, tales como PostgreSQL, boto3, entre otros módulos. Posteriormente, se puede encapsular la aplicación en un contenedor usando tecnologías como Docker, facilitando así el despliegue y la escalabilidad en un entorno de nube o en un clúster de Kubernetes.
+To deploy this application in production, you would need to set up an environment that includes all the necessary dependencies, such as PostgreSQL, boto3, among other modules. Subsequently, you can encapsulate the application in a container using technologies like Docker, making deployment and scalability easier in a cloud environment or Kubernetes cluster.
 
-### ¿Qué otros componentes agregarías para preparar esto para producción?
+### What other components would you add to prepare this for production?
 
-Sería beneficioso agregar sistemas de monitoreo y alerta, para supervisar el rendimiento y la salud de la aplicación. También sería prudente implementar pruebas automatizadas, y procesos de integración y despliegue continuo (CI/CD) para asegurar la calidad del código y facilitar las actualizaciones.
+It would be beneficial to add monitoring and alerting systems to monitor the performance and health of the application. It would also be prudent to implement automated testing and continuous integration and continuous deployment (CI/CD) processes to ensure code quality and facilitate updates.
 
-### ¿Cómo puede escalar esta aplicación con un conjunto de datos en crecimiento?
+### How can this application scale with a growing dataset?
 
-La aplicación puede escalar horizontalmente, agregando más instancias para manejar una mayor carga de trabajo. La base de datos, por su parte, puede escalarse verticalmente para administrar un conjunto de datos más amplio.
+The application can scale horizontally by adding more instances to handle increased workloads. The database, on the other hand, can scale vertically to manage a larger dataset.
 
-### ¿Cómo se puede recuperar la PII más tarde?
+### How can PII be retrieved later?
 
-La Información Personal Identificable (PII) puede recuperarse utilizando el mapeo de desenmascaramiento creado en el código, que vincula los hashes con sus valores originales se he creado una tabla en postgres que contiene los valores originales y se ha creado un script llamado recover_values en caso de que se necesite recuperar algunos valores. 
+Personal Identifiable Information (PII) can be retrieved using the deserialization mapping created in the code, which links hashes to their original values. A table containing the original values is created in PostgreSQL, and a script called "recover_values" has been created in case there is a need to retrieve some values.
 
-### ¿Cuáles son las suposiciones que se hiciceron?
+### What assumptions were made?
 
-Las suposiciones que pueden haberse realizado durante la creación de este código incluyen que los mensajes de SQS contendrán ciertos campos específicos, que la configuración del entorno (como las variables de entorno) está establecida correctamente, y que la estructura de la base de datos está preparada con las tablas correspondientes creadas. También parece asumirse que la cola SQS estará disponible en 'localhost:4566'
+Assumptions that may have been made during the creation of this code include that SQS messages will contain certain specific fields, that the environment configuration (such as environment variables) is set correctly, and that the database structure is prepared with the corresponding tables created. It also seems to assume that the SQS queue will be available at 'localhost:4566'.

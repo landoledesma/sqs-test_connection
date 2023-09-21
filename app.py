@@ -8,13 +8,13 @@ from dotenv import load_dotenv
 import logging
 import time
 
-# Configuración de logging
+# Logging configuration
 logging.basicConfig(level=logging.INFO)
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 
-# Configuración de Connection Pool
+# Connection Pool Configuration
 DB_POOL = SimpleConnectionPool(
     minconn=1,
     maxconn=10,
@@ -25,44 +25,44 @@ DB_POOL = SimpleConnectionPool(
     port=os.getenv('DB_PORT')
 )
 
-# Función para crear hash
-def crear_hash(cadena):
-    return hashlib.sha256(cadena.encode('utf-8')).hexdigest()
+# Function to create hash
+def create_hash(string):
+    return hashlib.sha256(string.encode('utf-8')).hexdigest()
 
-# Función para procesar mensajes
-def procesar_mensajes(mensajes, cursor):
-    mapeo_desenmascaramiento = {}
+# Function to process messages
+def process_messages(messages, cursor):
+    unmask_mapping = {}
 
-    for mensaje in mensajes:
-        cuerpo = mensaje['Body']
-        message_id = mensaje['MessageId']
-        datos = json.loads(cuerpo)
-        device_id = datos.get('device_id')
-        ip = datos.get('ip')
+    for message in messages:
+        body = message['Body']
+        message_id = message['MessageId']
+        data = json.loads(body)
+        device_id = data.get('device_id')
+        ip = data.get('ip')
 
         cursor.execute("SELECT 1 FROM user_logins WHERE message_id = %s", (message_id,))
         if cursor.fetchone():
-            logging.warning(f"Mensaje duplicado se ha omitido el mensaje: {message_id}")
+            logging.warning(f"Duplicated message has been skipped: {message_id}")
             continue
 
         if device_id and ip:
-            mapeo_desenmascaramiento[crear_hash(datos['device_id'])] = datos['device_id']
-            mapeo_desenmascaramiento[crear_hash(datos['ip'])] = datos['ip']
+            unmask_mapping[create_hash(data['device_id'])] = data['device_id']
+            unmask_mapping[create_hash(data['ip'])] = data['ip']
             
-            datos['device_id'] = crear_hash(datos['device_id'])
-            datos['ip'] = crear_hash(datos['ip'])
+            data['device_id'] = create_hash(data['device_id'])
+            data['ip'] = create_hash(data['ip'])
             
             cursor.execute("""
                 INSERT INTO user_logins (user_id, device_type, masked_ip, masked_device_id, locale, app_version, create_date, message_id) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (datos['user_id'], datos['device_type'], datos['ip'], datos['device_id'], datos['locale'], datos['app_version'], datetime.now().date(), message_id))
+            """, (data['user_id'], data['device_type'], data['ip'], data['device_id'], data['locale'], data['app_version'], datetime.now().date(), message_id))
         else:
-            logging.warning(f"Mensaje con datos incompletos: {datos}")
+            logging.warning(f"Message with incomplete data: {data}")
 
-    return mapeo_desenmascaramiento
+    return unmask_mapping
 
 def main():
-    while True:  # Bucle infinito
+    while True:  # Infinite loop
         try:
             sqs = boto3.client('sqs', endpoint_url='http://localhost:4566', region_name='us-east-1')
             response = sqs.receive_message(QueueUrl='http://localhost:4566/000000000000/login-queue', MaxNumberOfMessages=100)
@@ -70,10 +70,10 @@ def main():
             conn = DB_POOL.getconn()
             cursor = conn.cursor()
             
-            mensajes = response.get('Messages', [])
-            mapeo_desenmascaramiento = procesar_mensajes(mensajes, cursor)
+            messages = response.get('Messages', [])
+            unmask_mapping = process_messages(messages, cursor)
 
-            for hash_val, original_val in mapeo_desenmascaramiento.items():
+            for hash_val, original_val in unmask_mapping.items():
                 cursor.execute("""
                     INSERT INTO map_desmask (hash_val, original_val) 
                     VALUES (%s, %s)
@@ -81,13 +81,12 @@ def main():
 
             conn.commit()
         except Exception as e:
-            logging.error(f"Ocurrió un error: {e}")
+            logging.error(f"An error occurred: {e}")
         finally:
             cursor.close()
             DB_POOL.putconn(conn)
 
-        time.sleep(70)  # Espera antes de verificar nuevamente
+        time.sleep(70)  # Wait before checking again
 
 if __name__ == "__main__":
     main()
-

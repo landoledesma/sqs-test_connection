@@ -217,7 +217,7 @@ This will restart the containers previously configured in the `docker-compose.ym
 
 Using `boto3`, `sqs.receive_message` is invoked to read messages from an SQS queue in an infinite loop.
 
-#### What kind of data structures are used?
+#### What type of data structures are used?
 
 In this case, dictionaries are used to map and process the data, and lists are used to store multiple messages received from the queue.
 
@@ -245,7 +245,7 @@ It would be beneficial to add monitoring and alerting systems to monitor the per
 
 The application can scale horizontally by adding more instances to handle increased workloads. The database, on the other hand, can scale vertically to manage a larger dataset.
 
-### How can PII be retrieved later?
+### How can PII be recover later?
 
 Personal Identifiable Information (PII) can be retrieved using the deserialization mapping created in the code, which links hashes to their original values. A table containing the original values is created in PostgreSQL, and a script called "recover_values" has been created in case there is a need to retrieve some values.
 

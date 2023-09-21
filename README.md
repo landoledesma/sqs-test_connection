@@ -184,7 +184,7 @@ awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000
 ```
 
 ¡Ahora estás listo para comenzar a trabajar en el proyecto utilizando Docker!
-```
+
 
 ## Gestión de Contenedores Docker
 
@@ -210,13 +210,7 @@ docker-compose up -d
 
 Esto reiniciará los contenedores previamente configurados en el archivo `docker-compose.yml`. Puedes utilizar estos comandos para iniciar y detener el entorno Docker según sea necesario para el proyecto.
 
-### consideraciones 
-puedes usar el comando:
-
-  ```bash
-  awslocal sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/login-queue --attribute-names 
-  ```
-para verificar cuantos mensajes hay en la cola 
+---
 
 # Algunas cuestiones referentes al codigo 
 

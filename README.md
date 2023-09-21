@@ -1,14 +1,10 @@
-# Nombre de tu Proyecto
-
-Descripción 
-
 ## Configuración del Entorno de Desarrollo
 
  Guía paso a paso para configurar el entorno de desarrollo, que será útil tanto si utilizas Anaconda como si prefieres otro sistema de gestión de paquetes.
 
 ### Requisitos Previos
 
-- Python <3.6: Asegúrate de tener instalado Python 3.x en tu sistema. Puedes verificarlo e instalarlo desde la [página oficial de Python](https://www.python.org/).
+- Python < 3.10: Asegúrate de tener instalado Python 3.10 o mayor en tu sistema ya que este es la version con la que se construyo la aplicacion y esta probada. Puedes verificarlo e instalarlo desde la [página oficial de Python](https://www.python.org/).
 
 ### Pasos para la Configuración
 
@@ -17,15 +13,12 @@ Descripción
     Clona el repositorio de GitHub usando el siguiente comando en tu terminal:
    
     ```bash
-    git clone https://github.com/tu_usuario/tu_proyecto.git
+    https://github.com/landoledesma/sqs-test_connection.git
     ```
-
-    _(Reemplaza `tu_usuario` y `tu_proyecto` con los detalles reales de tu repositorio)_
 
 2. **Crear un Entorno Virtual**
 
     - **Con Anaconda:**
-   
       - Crea un nuevo entorno:
       
         ```bash
@@ -61,7 +54,6 @@ Descripción
           ```
 
     _(Reemplaza `tu_entorno` con un nombre para tu entorno y `3.x` con la versión de Python que deseas usar)_
-
 
 ---
 
@@ -117,22 +109,20 @@ Descripción
    Una vez instaladas todas las dependencias, verifica que tu ambiente está configurado correctamente ejecutando tu script o aplicación Python.
 
 ---
-
 ## Setup docker 
-
-1. You will need the following prerequisites:
-   - A GitHub, GitLab, Bitbucket, etc. account.
-   - The following software installed on your local machine:
-     - Docker ([Docker installation guide](https://docs.docker.com/get-docker/))
+Necesitarás los siguientes requisitos previos:
+   - Una cuenta en GitHub, GitLab, Bitbucket, etc.
+   - El siguiente software instalado en tu máquina local:
+     - Docker ([Guía de instalación de Docker](https://docs.docker.com/get-docker/))
      - Docker Compose
-     - AWS CLI (install using `pip install awscli-local`)
-     - PostgreSQL (installation instructions [here](https://www.postgresql.org/download/)).
+     - AWS CLI (instálalo usando `pip install awscli-local`)
+     - PostgreSQL (instrucciones de instalación [aquí](https://www.postgresql.org/download/)).
 
-2. Use the following Docker images with test data baked in:
+Utiliza las siguientes imágenes de Docker con datos de prueba incorporados:
    - Postgres
    - Localstack
 
-### Example Docker Compose YAML to run the test environment:
+### Ejemplo de archivo YAML de Docker Compose para ejecutar el entorno de prueba:
 
 ```yaml
 version: "3.9"
@@ -147,21 +137,21 @@ services:
       - 5432:5432
 ```
 
-3. PostgreSQL Credentials:
-   - Password: postgres
-   - Username: postgres
+Credenciales de PostgreSQL:
+   - Contraseña: postgres
+   - Nombre de usuario: postgres
 
-4. Test local access:
-   - Read a message from the queue using `awslocal`:
+Prueba el acceso local:
+   - Lee un mensaje de la cola utilizando `awslocal`:
      ```bash
      awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/login-queue
      ```
-   - Connect to the PostgreSQL database and verify the table is created:
-     i. Run the following command:
+   - Conéctate a la base de datos PostgreSQL y verifica que la tabla esté creada:
+     i. Ejecuta el siguiente comando:
      ```bash
      psql -d postgres -U postgres -p 5432 -h localhost -W
      ```
-     ii. Once connected to PostgreSQL, you can query the table with:
+     ii. Una vez conectado a PostgreSQL, puedes consultar la tabla con:
      ```sql
      postgres=# SELECT * FROM user_logins;
      ```

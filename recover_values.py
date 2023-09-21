@@ -1,6 +1,6 @@
-import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 import os
+
 # Configuración de Connection Pool
 DB_POOL = SimpleConnectionPool(
     minconn=1,
@@ -14,7 +14,7 @@ DB_POOL = SimpleConnectionPool(
 
 def obtener_valores_originales(cursor, hash_vals):
     placeholders = ", ".join(["%s"] * len(hash_vals))
-    cursor.execute(f"SELECT hash_val, original_val FROM mapeo_desenmascaramiento WHERE hash_val IN ({placeholders})", tuple(hash_vals))
+    cursor.execute(f"SELECT hash_val, original_val FROM map_desmask WHERE hash_val IN ({placeholders})", tuple(hash_vals))
     resultados = cursor.fetchall()
     resultado_dict = {row[0]: row[1] for row in resultados}
     return [resultado_dict.get(hash_val) for hash_val in hash_vals]

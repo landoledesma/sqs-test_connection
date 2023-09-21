@@ -1,7 +1,6 @@
 import boto3
 import hashlib
 import json
-import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 from datetime import datetime
 import os
